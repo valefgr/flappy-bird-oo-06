@@ -1,6 +1,7 @@
 const juego = {
   timerId: 0,
   // 4. Agrega timerObstaculos
+  timerObstaculos: 0,
 
   gravedad: 2,
   skyHeight: 580,
@@ -19,7 +20,7 @@ const juego = {
   loop: function () {
     bird.efectoGravedad();
     // 5. Llama a obstaculos.mover()
-
+    obstaculos.mover();
     bird.dibujar(); 
     obstaculos.dibujar();
     juego.verificaColision();
@@ -29,7 +30,7 @@ const juego = {
     document.addEventListener("keyup", bird.mover);
     obstaculos.crear();
     // 6. Asigna a juego.timerObstaculos un setInterval() que llame a obstaculos.crear cada 3000 milisegundos
-
+    juego.timerObstaculos = setInterval(obstaculos.crear, 3000);
     juego.timerId = setInterval(juego.loop, 20);
     
   },
@@ -37,7 +38,7 @@ const juego = {
   terminar: function () {  
     clearInterval(juego.timerId);
     // 7. Limpia el timer guardado dentro de juego.timerObstaculos
-
+    clearInterval(juego.timerObstaculos);
     juego.mostrarGameOver();
     juego.pararEfectos();
   },
@@ -91,7 +92,7 @@ const bird = {
 const obstaculos = {
   obstacleContainer: document.querySelector(".obstacles"),
   // 1. Agrega velocidad
-
+  velocidad: 1,
   gap: 200,
   maxHeight: 320,
   minHeight: 50,
@@ -119,7 +120,7 @@ const obstaculos = {
       topObstacle: topObstacle,
       bottomObstacle: bottomObstacle,
       // 2. Modifica left para que tenga valor de window.innerWidth
-      left: 500,
+      left: window.innerWidth,
       width: obstaculos.width,
       topObstacleHeight: topObstacleHeight,
       bottomObstacleHeight: bottomObstacleHeight,
@@ -132,7 +133,10 @@ const obstaculos = {
   // 3. Agrega mover()
   mover: function () {
     for (var i = 0; i < obstaculos.lista.length; i++) {
-      // agrega código aquí
+      obstaculos.lista[i].left -= obstaculos.velocidad;
+
+      // obstaculos.eliminar(obstaculos.lista[i]);
+      // contador.actualizar(obstaculos.lista[i]);
     }
   },
 
